@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrenador Interactivo RCAA2</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f1ea;
+      color: #1e293b;
+      margin: 0;
+      padding: 24px 16px 48px 16px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ENCABEZADO */
+    .hero-header {
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 24px 28px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .hero-header p {
+      margin: 6px 0 0 0;
+      color: #dbeafe;
+      font-size: 0.92rem;
+    }
+    .norm-badge {
+      background: #172554;
+      color: #93c5fd;
+      border: 1px solid #3b82f6;
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .norm-badge:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+
+    /* BARRA DE BOTONES */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: #ffffff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+    }
+    .toolbar-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: inherit;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #1e293b;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover { background: #e2e8f0; }
+    .btn-ok { background: #dcfce7; border-color: #86efac; color: #166534; }
+    .btn-ok:hover { background: #bbf7d0; }
+    .btn-error { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+    .btn-error:hover { background: #fecaca; }
+    .btn-helper { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+    .btn-helper:hover { background: #dbeafe; }
+
+    /* FICHA CATALOGRÁFICA TRADICIONAL */
+    .catalog-card {
+      background: #fffdf7;
+      border: 2px solid #d6cfc2;
+      border-left: 6px solid #dc2626;
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+    .catalog-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preview-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: #92400e;
+      background: #fef3c7;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #fde68a;
+    }
+    .progress-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .progress-track {
+      width: 120px;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #16a34a;
+      transition: width 0.25s ease;
+    }
+    .preview-text {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #0f172a;
+      min-height: 1.8em;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+    .preview-isbn-block {
+      display: block;
+      margin-top: 8px;
+      text-indent: 1.5rem;
+    }
+    .preview-placeholder {
+      color: #64748b;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* CAJAS POR ÁREA ISBD */
+    .areas-grid {
+      display: grid;
+      gap: 18px;
+    }
+    .area-box {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+    .area-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .area-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .area-num {
+      background: #1e3a8a;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 9px;
+      border-radius: 6px;
+    }
+    .area-num.opt {
+      background: #475569;
+    }
+    .area-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0f172a;
+    }
+    .area-rule-tag {
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .area-input {
+      width: 100%;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.02rem;
+      padding: 11px 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .area-input:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: #2563eb;
+    }
+
+    /* CHECKLIST DE REGLAS */
+    .sub-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+    .sub-rule {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #94a3b8;
+      font-size: 0.86rem;
+    }
+    .sub-rule.valid {
+      border-color: #bbf7d0;
+      border-left-color: #16a34a;
+      background: #f0fdf4;
+    }
+    .sub-rule.invalid {
+      border-color: #fecaca;
+      border-left-color: #dc2626;
+      background: #fef2f2;
+    }
+    .sub-rule-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: #0f172a;
+      gap: 8px;
+    }
+    .sub-rule-desc {
+      color: #475569;
+      margin-top: 4px;
+    }
+    .error-list {
+      margin: 6px 0 0 0;
+      padding-left: 18px;
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .valid .badge { background: #bbf7d0; color: #166534; }
+    .invalid .badge { background: #fecaca; color: #991b1b; }
+
+    /* FOOTER CON FIRMA */
+    .site-footer {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.92rem;
+      color: #475569;
+    }
+    .signature {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .author-link {
+      color: #1e3a8a;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      transition: all 0.15s ease;
+    }
+    .author-link:hover {
+      background: #1e3a8a;
+      color: #ffffff;
+      border-color: #1e3a8a;
+    }
+    .gemini-badge {
+      font-weight: 700;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #bfdbfe;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="hero-header">
+      <div>
+        <h1>📚 Entrenador Interactivo RCAA2</h1>
+        <p>Práctica de catalogación descriptiva y puntuación prescrita ISBD para monografías impresas</p>
+      </div>
+      <a href="https://faud.unc.edu.ar/wp-content/blogs.dir/3/files/sites/3/AACR2-2003.pdf" target="_blank" rel="noopener noreferrer" class="norm-badge" title="Abrir manual oficial en PDF">
+        📖 Norma: RCAA2 (Rev. 2003) ↗
+      </a>
+    </header>
+
+    <div class="toolbar">
+      <div class="toolbar-group">
+        <button class="btn btn-ok" id="btnLoadOk">✓ Cargar ejemplo perfecto</button>
+        <button class="btn btn-error" id="btnLoadCapture">✗ Probar caso con errores</button>
+        <button class="btn" id="btnClear">🗑️ Limpiar todo</button>
+      </div>
+      <div class="toolbar-group">
+        <button class="btn btn-helper" id="btnInsertDash">➕ Insertar raya ( — )</button>
+        <button class="btn btn-helper" id="btnCopyCard">📋 Copiar ficha</button>
+      </div>
+    </div>
+
+    <div class="catalog-card">
+      <div class="catalog-top-bar">
+        <span class="preview-label">Ficha Catalográfica Unificada (Vista en vivo)</span>
+        <div class="progress-pill">
+          <span id="scoreCounter">0 / 9 reglas</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressBar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-text" id="fullPreview">
+        <span class="preview-placeholder">Completá las áreas de abajo para visualizar la ficha catalográfica terminada...</span>
+      </div>
+    </div>
+
+    <div class="areas-grid">
+      <!-- ÁREA 1 -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num">ÁREA 1</span>
+            <span class="area-title">Título y Mención de Responsabilidad</span>
+          </div>
+          <span class="area-rule-tag">Regla 1.1 y Apéndice A</span>
+        </div>
+        <input type="text" id="inputArea1" class="area-input" placeholder="Ej.: Cien años de soledad / Gabriel García Márquez.">
+        <ul class="sub-checklist" id="listArea1"></ul>
+      </div>
+
+      <!-- ÁREA 2 -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num opt">ÁREA 2</span>
+            <span class="area-title">Edición (Incluí la raya inicial —)</span>
+          </div>
+          <span class="area-rule-tag">Regla 1.2 [Opcional: Vacío si es 1ª ed.]</span>
+        </div>
+        <input type="text" id="inputArea2" class="area-input" placeholder="Ej.: — 2a ed.">
+        <ul class="sub-checklist" id="listArea2"></ul>
+      </div>
+
+      <!-- ÁREA 4 -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num">ÁREA 4</span>
+            <span class="area-title">Publicación, Distribución, etc. (Incluí la raya inicial —)</span>
+          </div>
+          <span class="area-rule-tag">Regla 1.4</span>
+        </div>
+        <input type="text" id="inputArea4" class="area-input" placeholder="Ej.: — Buenos Aires : Sudamericana, 2003.">
+        <ul class="sub-checklist" id="listArea4"></ul>
+      </div>
+
+      <!-- ÁREA 5 -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num">ÁREA 5</span>
+            <span class="area-title">Descripción Física (Incluí la raya inicial —)</span>
+          </div>
+          <span class="area-rule-tag">Regla 2.5</span>
+        </div>
+        <input type="text" id="inputArea5" class="area-input" placeholder="Ej.: — 496 p. ; 20 cm.">
+        <ul class="sub-checklist" id="listArea5"></ul>
+      </div>
+
+      <!-- ÁREA 6: SERIE -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num opt">ÁREA 6</span>
+            <span class="area-title">Serie o Colección (Incluí la raya inicial — y paréntesis)</span>
+          </div>
+          <span class="area-rule-tag">Regla 1.6 [Opcional: Vacío si no pertenece a serie]</span>
+        </div>
+        <input type="text" id="inputArea6" class="area-input" placeholder="Ej.: — (Narrativas hispánicas ; 42)">
+        <ul class="sub-checklist" id="listArea6"></ul>
+      </div>
+
+      <!-- ÁREA 8: ISBN -->
+      <div class="area-box">
+        <div class="area-header">
+          <div class="area-title-wrap">
+            <span class="area-num opt">ÁREA 8</span>
+            <span class="area-title">Número Normalizado y Condiciones de Disponibilidad (ISBN)</span>
+          </div>
+          <span class="area-rule-tag">Regla 1.8B [Opcional]</span>
+        </div>
+        <input type="text" id="inputArea8" class="area-input" placeholder="Ej.: ISBN 978-950-07-2345-6.">
+        <ul class="sub-checklist" id="listArea8"></ul>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="signature">
+        <span>Desarrollado por</span>
+        <a href="https://github.com/SofiaEscudero13" target="_blank" rel="noopener noreferrer" class="author-link">Sofía Escudero</a>,
+        <a href="https://www.linkedin.com/in/silvina-antonella-carreno/" target="_blank" rel="noopener noreferrer" class="author-link">Silvina Carreño</a>
+        <span>y</span>
+        <span class="gemini-badge">✦ Gemini</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const conectores = new Set([
+      'por', 'by', 'de', 'del', 'la', 'las', 'el', 'los', 'y', 'e', 'o', 'u',
+      'con', 'para', 'en', 'tr.', 'trad.', 'traducción', 'il.', 'pról.', 'ed.', 'et', 'al.'
+    ]);
+
+    const normDash = (s) => s.replace(/--/g, '—').replace(/–/g, '—');
+    let lastFocusedInput = null;
+
+    // ÁREA 1
+    const rulesArea1 = [
+      {
+        title: '1A. Mayúscula inicial del título y subtítulo',
+        ref: 'Apéndice A (A.4A1)',
+        desc: 'El título empieza con mayúscula. Si hay subtítulo tras ( : ), empieza con minúscula.',
+        evaluate: (val) => {
+          const errors = [];
+          const t = val.trim();
+          if (!t) return { ok: false, errors: [] };
+
+          if (/^[a-záéíóúñü]/.test(t)) {
+            errors.push('Empezaste el título con minúscula ("' + t.split(' ')[0] + '"). La primera letra va con mayúscula.');
+          }
+          const parteTitulo = t.split(/[\/—–\-]/)[0];
+          if (parteTitulo.length > 5 && parteTitulo === parteTitulo.toUpperCase()) {
+            errors.push('No escribas el título todo en MAYÚSCULAS (transcribí solo la inicial en mayúscula).');
+          }
+          if (/: [A-ZÁÉÍÓÚÑÜ]/.test(parteTitulo)) {
+            errors.push('Después de los dos puntos del subtítulo ( : ), la primera palabra debe empezar con minúscula.');
+          }
+          return { ok: errors.length === 0 && t.length >= 3, errors };
+        }
+      },
+      {
+        title: '1B. Barra diagonal de mención de responsabilidad ( / )',
+        ref: 'Regla 1.1F1',
+        desc: 'Espacio, barra diagonal, espacio ( / ) antes del autor. Sin punto previo ni guiones.',
+        evaluate: (val) => {
+          const errors = [];
+          const t = val.trim();
+          if (!t) return { ok: false, errors: [] };
+
+          if (!t.includes('/')) {
+            if (/ - | – | — /.test(t)) {
+              errors.push('¡Usaste un guion (- o –) en vez de la barra diagonal! El título y el autor se separan con " / ".');
+            } else if (t.split(/\s+/).length >= 4) {
+              errors.push('Falta la barra diagonal con espacios ( / ) para separar el título del autor.');
+            }
+            return { ok: false, errors };
+          }
+
+          const cantBarras = (t.match(/\//g) || []).length;
+          if (cantBarras > 1) {
+            errors.push('Pusiste ' + cantBarras + ' barras diagonales (/). Solo va una; si hay otro rol usá " ; ".');
+          }
+          if (/[.,;:]\s*\//.test(t)) {
+            errors.push('Pusiste un signo de puntuación antes de la barra (ej. ". /"). Nunca va punto antes de " / ".');
+          }
+          if (/\S\/|\/\S/.test(t)) {
+            errors.push('Falta el espacio obligatorio antes o después de la barra diagonal (debe ser " / ").');
+          }
+          return { ok: errors.length === 0, errors };
+        }
+      },
+      {
+        title: '1C. Nombres propios del autor y punto final del área',
+        ref: 'Apéndice A y Regla 1.0C',
+        desc: 'Nombre y apellido del autor con mayúscula inicial (orden directo) y punto (.) al final de la caja.',
+        evaluate: (val) => {
+          const errors = [];
+          const t = val.trim();
+          if (!t) return { ok: false, errors: [] };
+
+          let autorPart = null;
+          if (t.includes('/')) {
+            autorPart = t.split('/')[1];
+          } else if (/ [-–—] /.test(t)) {
+            autorPart = t.split(/ [-–—] /)[1];
+          }
+
+          if (autorPart !== null) {
+            const limpia = autorPart.replace(/[\.\-—–\/]+$/, '').trim();
+            if (!limpia) {
+              errors.push('Falta escribir el nombre del autor.');
+            } else {
+              if (limpia.includes(',')) {
+                errors.push('En la mención de responsabilidad el autor va en orden directo (Nombre Apellido), sin coma de inversión.');
+              }
+              const palabras = limpia.split(/\s+/);
+              const minusculas = [];
+              for (const p of palabras) {
+                const w = p.replace(/[.,;:\[\]]/g, '');
+                if (!w || conectores.has(w.toLowerCase())) continue;
+                if (/^[a-záéíóúñü]/.test(w)) minusculas.push('"' + w + '"');
+              }
+              if (minusculas.length > 0) {
+                errors.push('Escribiste nombres propios del autor en minúscula (' + minusculas.join(', ') + ').');
+              }
+            }
+          }
+
+          if (!t.endsWith('.')) {
+            errors.push('Esta área debe cerrar con un punto final (.) para poder unirla con el guion de la siguiente área.');
+          }
+
+          return { ok: errors.length === 0 && autorPart !== null && t.includes('/'), errors };
+        }
+      }
+    ];
+
+    // ÁREA 2
+    const rulesArea2 = [
+      {
+        title: '2A. Separador inicial y abreviatura de edición (— 2a ed.)',
+        ref: 'Regla 1.2B1 y Apéndice B',
+        desc: 'Empezá con raya y espacio (— o -- ), número arábigo y abreviatura "ed." con punto final.',
+        evaluate: (val) => {
+          const errors = [];
+          const raw = val.trim();
+          if (!raw) return { ok: true, optionalEmpty: true, errors: [] };
+
+          const t = normDash(raw);
+
+          if (/1[aª°]?\s*ed|primera/i.test(t)) {
+            errors.push('¡Trampa! La 1ª edición no se registra en el Área 2.');
+          }
+          if (/segunda|tercera|cuarta|edici[oó]n/i.test(t)) {
+            errors.push('No escribas la palabra completa. Usá número arábigo y abreviatura: "2a ed.".');
+          }
+          if (/^-\s/.test(raw) && !raw.startsWith('--')) {
+            errors.push('Usaste un guion corto simple (-). Usá raya (—) o doble guion (--).');
+          } else if (!t.startsWith('—')) {
+            errors.push('Empezá esta caja con la raya separadora de área (— o --).');
+          } else if (/^—\S/.test(t)) {
+            errors.push('Falta el espacio obligatorio después de la raya inicial (debe ser "— 2a ed.").');
+          }
+
+          if (/ed\s*[-—]/.test(t) || /[A-Za-z]{4,}/.test(t.replace(/ed\./i, ''))) {
+            errors.push('No mezcles otra área acá ni pongas un guion pegado a "ed".');
+          }
+          if (!t.endsWith('.')) {
+            errors.push('Falta el punto final de la abreviatura "ed." (ej.: "— 2a ed.").');
+          }
+
+          const formatoExacto = /^— ([2-9]|\d{2,})[aª] ed\.$/.test(t);
+          return { ok: errors.length === 0 && formatoExacto, errors };
+        }
+      }
+    ];
+
+    // ÁREA 4
+    const rulesArea4 = [
+      {
+        title: '4A. Separador inicial y Lugar : Editorial ( : )',
+        ref: 'Regla 1.4C - 1.4D',
+        desc: 'Iniciá con raya y espacio (— ), Lugar, espacio, dos puntos, espacio ( : ) y Editorial sin "S.A." ni "Editorial".',
+        evaluate: (val) => {
+          const errors = [];
+          const raw = val.trim();
+          if (!raw) return { ok: false, errors: [] };
+          const t = normDash(raw);
+
+          if (/^-\s/.test(raw) && !raw.startsWith('--')) {
+            errors.push('Usaste un guion corto simple (-). Usá raya (—) o doble guion (--).');
+          } else if (!t.startsWith('—')) {
+            errors.push('Falta la raya separadora al principio de la caja (— Lugar : Editorial, Año.).');
+          } else if (/^—\S/.test(t)) {
+            errors.push('Falta el espacio después de la raya inicial (ej.: "— Buenos Aires").');
+          }
+
+          if (!t.includes(':')) {
+            errors.push('¡Te salteaste los dos puntos y la editorial! Después de la ciudad debe ir " : Nombre de la editorial".');
+          } else if (/\S: | :\S|\S:\S/.test(t)) {
+            errors.push('Los dos puntos ( : ) deben tener un espacio antes y un espacio después.');
+          }
+
+          if (/Editorial |Ediciones |S\.A\.|S\.R\.L\./i.test(t)) {
+            errors.push('Regla 1.4D2: Omití términos comerciales como "Editorial", "Ediciones" o "S.A.".');
+          }
+
+          const tieneLugarYEditor = /^— (\[S\.l\.\]|\S[^:]*) : [^,:]+/.test(t);
+          return { ok: errors.length === 0 && tieneLugarYEditor, errors };
+        }
+      },
+      {
+        title: '4B. Coma, Año de publicación y punto final (, 2003.)',
+        ref: 'Regla 1.4F',
+        desc: 'Después de la editorial va coma pegada, espacio, el año de 4 cifras y punto final (, 2003.).',
+        evaluate: (val) => {
+          const errors = [];
+          const t = normDash(val.trim());
+          if (!t) return { ok: false, errors: [] };
+
+          if (!/\d{4}/.test(t)) {
+            errors.push('Falta el año de publicación de 4 dígitos (ej.: ", 2003.").');
+          } else {
+            if (!/,\s*\[?\d{4}\??\]?/.test(t)) {
+              errors.push('¡Falta la coma antes del año! Debe ir coma pegada a la editorial y espacio antes del año.');
+            } else if (/ , \d{4}|,\d{4}/.test(t)) {
+              errors.push('La coma va pegada a la editorial y seguida de un espacio (", 2003.").');
+            }
+          }
+
+          if (!t.endsWith('.')) {
+            errors.push('Falta el punto final después del año (ej.: "2003.").');
+          }
+
+          const ok = errors.length === 0 && /, \[?\d{4}\??\]?\.$/.test(t);
+          return { ok, errors };
+        }
+      }
+    ];
+
+    // ÁREA 5
+    const rulesArea5 = [
+      {
+        title: '5A. Separador inicial y Extensión en páginas (— 496 p.)',
+        ref: 'Regla 2.5B',
+        desc: 'Iniciá con raya y espacio (— ), número de páginas, espacio y "p." con punto.',
+        evaluate: (val) => {
+          const errors = [];
+          const raw = val.trim();
+          if (!raw) return { ok: false, errors: [] };
+          const t = normDash(raw);
+
+          if (/^-\s/.test(raw) && !raw.startsWith('--')) {
+            errors.push('Usaste un guion corto simple (-). Usá raya (—) o doble guion (--).');
+          } else if (!t.startsWith('—')) {
+            errors.push('Falta la raya separadora al inicio del área (— 496 p. ; 20 cm.).');
+          } else if (/^—\S/.test(t)) {
+            errors.push('Falta el espacio después de la raya inicial.');
+          }
+
+          if (!/\d+\s*p\b/i.test(t)) {
+            errors.push('Falta indicar la cantidad de páginas (ej.: "496 p.").');
+          } else {
+            if (/\d+p\./i.test(t)) {
+              errors.push('Falta un espacio entre el número de páginas y la letra "p." (debe ser "496 p.").');
+            }
+            if (/\d+\s+p(?!\.)/i.test(t)) {
+              errors.push('Falta el punto de abreviatura después de la "p" (debe ser "p.").');
+            }
+          }
+
+          const ok = errors.length === 0 && /^— ([xvli]+,\s*)?\d+ p\./i.test(t);
+          return { ok, errors };
+        }
+      },
+      {
+        title: '5B. Punto y coma y Dimensiones en centímetros ( ; 20 cm.)',
+        ref: 'Regla 2.5D1',
+        desc: 'Precedido por espacio, punto y coma, espacio ( ; ), número entero, espacio y "cm." con punto.',
+        evaluate: (val) => {
+          const errors = [];
+          const t = normDash(val.trim());
+          if (!t) return { ok: false, errors: [] };
+
+          if (!t.includes(';')) {
+            errors.push('Falta el signo de punto y coma con espacios ( ; ) para separar las páginas de las dimensiones.');
+          } else if (/\S; | ;\S|\S;\S/.test(t)) {
+            errors.push('El punto y coma ( ; ) debe tener un espacio antes y un espacio después.');
+          }
+
+          const partes = t.split(';');
+          if (partes.length > 1) {
+            const dim = partes[1].trim();
+            if (/\d+[.,]\d+/.test(dim)) {
+              errors.push('¡No uses decimales! Las fracciones de cm se redondean siempre hacia el entero siguiente (Regla 2.5D1).');
+            }
+            if (/\d+\s*m\.?$/i.test(dim) && !/cm/i.test(dim)) {
+              errors.push('¡Escribiste "' + dim + '" (metros) en lugar de centímetros! Te faltó la letra "c" en "cm.".');
+            } else if (!/cm/i.test(dim)) {
+              errors.push('Falta la abreviatura "cm." para indicar la altura del libro.');
+            } else {
+              if (/\d+cm/i.test(dim)) {
+                errors.push('Pegaste el número a la unidad ("' + dim + '"). Debe haber un espacio entre el número y "cm.".');
+              }
+              if (/cm(?!\.)/i.test(dim)) {
+                errors.push('Falta el punto final después de "cm" (debe cerrar como "cm.").');
+              }
+            }
+          }
+
+          const ok = errors.length === 0 && / ; \d+ cm\.$/.test(t);
+          return { ok, errors };
+        }
+      }
+    ];
+
+    // ÁREA 6: SERIE
+    const rulesArea6 = [
+      {
+        title: '6A. Separador inicial, paréntesis y numeración de serie (— (Serie ; n°))',
+        ref: 'Regla 1.6B - 1.6G',
+        desc: 'Empezá con raya y espacio (— ), encerrá la serie entre paréntesis ( ), con mayúscula inicial y ( ; ) antes del número.',
+        evaluate: (val) => {
+          const errors = [];
+          const raw = val.trim();
+          if (!raw) return { ok: true, optionalEmpty: true, errors: [] };
+          const t = normDash(raw);
+
+          if (/^-\s/.test(raw) && !raw.startsWith('--')) {
+            errors.push('Usaste un guion corto simple (-). Usá raya (—) o doble guion (--).');
+          } else if (!t.startsWith('—')) {
+            errors.push('Falta la raya separadora al inicio del área de serie (ej.: "— (Colección ; 12)").');
+          } else if (/^—\S/.test(t)) {
+            errors.push('Falta el espacio obligatorio después de la raya inicial (debe ser "— (").');
+          }
+
+          const sinRaya = t.replace(/^—\s*/, '');
+          if (!sinRaya.startsWith('(') || !sinRaya.replace(/\.$/, '').endsWith(')')) {
+            errors.push('Toda el área de serie debe ir encerrada entre paréntesis: (Título de la serie ; número).');
+          } else {
+            if (sinRaya.endsWith(').')) {
+              errors.push('¡Trampa! Después del paréntesis de cierre de la serie ")" no se agrega punto final.');
+            }
+            const interior = sinRaya.slice(1, -1).trim();
+            if (!interior) {
+              errors.push('Escribí el título de la serie dentro de los paréntesis.');
+            } else {
+              if (/^[a-záéíóúñü]/.test(interior)) {
+                errors.push('El título propiamente dicho de la serie debe comenzar con mayúscula inicial dentro del paréntesis.');
+              }
+              if (interior.includes(';')) {
+                if (/\S; | ;\S|\S;\S/.test(interior)) {
+                  errors.push('El punto y coma ( ; ) que precede al número de la serie lleva un espacio antes y otro después.');
+                }
+              } else if (/\s\d+$/.test(interior)) {
+                errors.push('Si la serie tiene número, debe separarse del título de la serie con espacio, punto y coma, espacio (ej.: " ; 42").');
+              }
+            }
+          }
+
+          const ok = errors.length === 0 && /^— \([A-ZÁÉÍÓÚÑÜ][^)]+\)$/.test(t);
+          return { ok, errors };
+        }
+      }
+    ];
+
+    // ÁREA 8: ISBN
+    const rulesArea8 = [
+      {
+        title: '8A. Sigla ISBN sin dos puntos, guiones y punto final',
+        ref: 'Regla 1.8B1',
+        desc: 'Escribí "ISBN" en mayúsculas (sin dos puntos), espacio, los 10 o 13 dígitos separados por guiones y punto final.',
+        evaluate: (val) => {
+          const errors = [];
+          const raw = val.trim();
+          if (!raw) return { ok: true, optionalEmpty: true, errors: [] };
+
+          const t = normDash(raw).replace(/^—\s*/, '');
+
+          if (!/^ISBN/i.test(t)) {
+            errors.push('El área debe comenzar con la sigla "ISBN" (ej.: "ISBN 978-950-07-2345-6.").');
+          } else {
+            if (!/^ISBN/.test(t)) {
+              errors.push('La sigla "ISBN" se escribe íntegramente en MAYÚSCULAS.');
+            }
+            if (/^ISBN\s*:/.test(t)) {
+              errors.push('¡Trampa clásica! En las RCAA2 NUNCA van dos puntos (:) después de la sigla ISBN (escribí directo "ISBN 978-...").');
+            }
+          }
+
+          const soloDigitos = t.replace(/^ISBN\s*:?\s*/i, '').replace(/[\.\-\s]/g, '');
+          if (soloDigitos.length > 0 && soloDigitos.length !== 10 && soloDigitos.length !== 13) {
+            errors.push('El número de ISBN debe tener exactamente 10 o 13 dígitos (actualmente pusiste ' + soloDigitos.length + ').');
+          }
+
+          if (/\d{8,}/.test(t)) {
+            errors.push('Separá los bloques del ISBN con guiones (ej.: "978-950-07-2345-6").');
+          }
+
+          if (!t.endsWith('.')) {
+            errors.push('Cerrá el bloque del ISBN con punto final (.).');
+          }
+
+          const ok = errors.length === 0 && /^ISBN [\d\-X]{11,17}\.$/.test(t) && (soloDigitos.length === 10 || soloDigitos.length === 13);
+          return { ok, errors };
+        }
+      }
+    ];
+
+    const inputs = {
+      area1: document.getElementById('inputArea1'),
+      area2: document.getElementById('inputArea2'),
+      area4: document.getElementById('inputArea4'),
+      area5: document.getElementById('inputArea5'),
+      area6: document.getElementById('inputArea6'),
+      area8: document.getElementById('inputArea8')
+    };
+
+    Object.values(inputs).forEach(inp => {
+      inp.addEventListener('focus', () => { lastFocusedInput = inp; });
+      inp.addEventListener('input', updateAll);
+    });
+
+    function renderSubList(listEl, rulesArray, val) {
+      listEl.innerHTML = '';
+      let passedInArea = 0;
+
+      rulesArray.forEach(r => {
+        const res = r.evaluate(val);
+        let cls = '';
+        let badge = r.ref;
+
+        if (res.optionalEmpty) {
+          cls = '';
+          badge = 'Opcional (Vacío)';
+          passedInArea++;
+        } else if (res.ok) {
+          cls = 'valid';
+          badge = '✓ Correcto (' + r.ref + ')';
+          passedInArea++;
+        } else if (res.errors.length > 0) {
+          cls = 'invalid';
+          badge = '✗ Corregir (' + r.ref + ')';
+        }
+
+        const errHtml = res.errors.length > 0
+          ? '<ul class="error-list">' + res.errors.map(e => '<li>' + e + '</li>').join('') + '</ul>'
+          : '';
+
+        const li = document.createElement('li');
+        li.className = 'sub-rule ' + cls;
+        li.innerHTML =
+          '<div class="sub-rule-top">' +
+            '<span>' + r.title + '</span>' +
+            '<span class="badge">' + badge + '</span>' +
+          '</div>' +
+          '<div class="sub-rule-desc">' + r.desc + '</div>' +
+          errHtml;
+        listEl.appendChild(li);
+      });
+
+      return passedInArea;
+    }
+
+    function updateAll() {
+      const v1 = inputs.area1.value;
+      const v2 = inputs.area2.value;
+      const v4 = inputs.area4.value;
+      const v5 = inputs.area5.value;
+      const v6 = inputs.area6.value;
+      const v8 = inputs.area8.value;
+
+      let totalPassed = 0;
+      const totalRules =
+        rulesArea1.length +
+        rulesArea2.length +
+        rulesArea4.length +
+        rulesArea5.length +
+        rulesArea6.length +
+        rulesArea8.length;
+
+      totalPassed += renderSubList(document.getElementById('listArea1'), rulesArea1, v1);
+      totalPassed += renderSubList(document.getElementById('listArea2'), rulesArea2, v2);
+      totalPassed += renderSubList(document.getElementById('listArea4'), rulesArea4, v4);
+      totalPassed += renderSubList(document.getElementById('listArea5'), rulesArea5, v5);
+      totalPassed += renderSubList(document.getElementById('listArea6'), rulesArea6, v6);
+      totalPassed += renderSubList(document.getElementById('listArea8'), rulesArea8, v8);
+
+      const cuerpoPartes = [v1.trim(), v2.trim(), v4.trim(), v5.trim(), v6.trim()].filter(Boolean);
+      const isbnParte = v8.trim();
+      const previewEl = document.getElementById('fullPreview');
+
+      if (cuerpoPartes.length > 0 || isbnParte) {
+        previewEl.innerHTML = '';
+        if (cuerpoPartes.length > 0) {
+          const spanCuerpo = document.createElement('span');
+          spanCuerpo.textContent = cuerpoPartes.join(' ');
+          previewEl.appendChild(spanCuerpo);
+        }
+        if (isbnParte) {
+          const spanIsbn = document.createElement('span');
+          spanIsbn.className = 'preview-isbn-block';
+          spanIsbn.textContent = isbnParte;
+          previewEl.appendChild(spanIsbn);
+        }
+      } else {
+        previewEl.innerHTML = '<span class="preview-placeholder">Completá las áreas de abajo para visualizar la ficha catalográfica terminada...</span>';
+      }
+
+      const hayTexto = cuerpoPartes.length > 0 || Boolean(isbnParte);
+      const scoreReal = hayTexto ? totalPassed : 0;
+      const pct = Math.round((scoreReal / totalRules) * 100);
+
+      document.getElementById('scoreCounter').textContent = scoreReal + ' / ' + totalRules + ' reglas';
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    document.getElementById('btnLoadOk').addEventListener('click', () => {
+      inputs.area1.value = 'Cien años de soledad / Gabriel García Márquez.';
+      inputs.area2.value = '— 2a ed.';
+      inputs.area4.value = '— Buenos Aires : Sudamericana, 2003.';
+      inputs.area5.value = '— 496 p. ; 20 cm.';
+      inputs.area6.value = '— (Narrativas hispánicas ; 42)';
+      inputs.area8.value = 'ISBN 978-950-07-2345-6.';
+      updateAll();
+    });
+
+    document.getElementById('btnLoadCapture').addEventListener('click', () => {
+      inputs.area1.value = 'cien años de soledad - gabriel García Márquez';
+      inputs.area2.value = '– 2a ed-';
+      inputs.area4.value = 'Buenos Aires 2003.';
+      inputs.area5.value = '– 496 p. ; 2m.';
+      inputs.area6.value = '— (narrativas hispánicas; 42).';
+      inputs.area8.value = 'isbn: 978950072';
+      updateAll();
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      Object.values(inputs).forEach(inp => inp.value = '');
+      updateAll();
+      inputs.area1.focus();
+    });
+
+    document.getElementById('btnInsertDash').addEventListener('click', () => {
+      const target = lastFocusedInput || inputs.area2;
+      const start = target.selectionStart || 0;
+      const end = target.selectionEnd || 0;
+      const sep = '— ';
+      target.value = target.value.substring(0, start) + sep + target.value.substring(end);
+      target.focus();
+      target.selectionStart = target.selectionEnd = start + sep.length;
+      updateAll();
+    });
+
+    document.getElementById('btnCopyCard').addEventListener('click', (e) => {
+      const cuerpo = [
+        inputs.area1.value.trim(),
+        inputs.area2.value.trim(),
+        inputs.area4.value.trim(),
+        inputs.area5.value.trim(),
+        inputs.area6.value.trim()
+      ].filter(Boolean).join(' ');
+      const isbn = inputs.area8.value.trim();
+      const textoFinal = [cuerpo, isbn].filter(Boolean).join('\n  ');
+      if (!textoFinal) return;
+
+      navigator.clipboard.writeText(textoFinal);
+      const originalText = e.target.textContent;
+      e.target.textContent = '✓ ¡Copiada!';
+      setTimeout(() => { e.target.textContent = originalText; }, 1500);
+    });
+
+    updateAll();
+  </script>
+</body>
+</html>
