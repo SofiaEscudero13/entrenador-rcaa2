@@ -21,8 +21,8 @@ Este proyecto funciona como un "validador estricto" en tiempo real que evalúa e
 
 ## Autoras
 Desarrollado y mantenido por:
-- **Sofía Escudero** - [GitHub](https://github.com/SofiaEscudero13)
-- **Silvina Carreño** - [LinkedIn](https://www.linkedin.com/in/silvina-antonella-carreno/)
+- **Sofía Escudero (data engineer y estudiante de Ciencias de Datos IFTS N°18)** - [GitHub](https://github.com/SofiaEscudero13)
+- **Silvina Carreño (docente y estudiante de Bibliotecología IFTS N°13)** - [LinkedIn](https://www.linkedin.com/in/silvina-antonella-carreno/)
 
 ---
 *Herramienta de código abierto creada para facilitar la práctica en la cursada de Catalogación.*
