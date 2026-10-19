@@ -22,7 +22,7 @@ Este proyecto funciona como un "validador estricto" en tiempo real que evalúa e
 
 ## Autoras
 Desarrollado y mantenido por:
-- **Sofía Escudero (data engineer y estudiante de Ciencias de Datos IFTS N°18)** - [GitHub](https://github.com/SofiaEscudero13)
+- **Sofía Escudero (data engineer y estudiante de Ciencias de Datos IFTS N°18)** - [LinkedIn](https://www.linkedin.com/in/sofiaescudero13/)
 - **Silvina Carreño (docente y estudiante de Bibliotecología IFTS N°13)** - [LinkedIn](https://www.linkedin.com/in/silvina-antonella-carreno/)
 
 ---
