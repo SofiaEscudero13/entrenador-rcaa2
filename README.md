@@ -18,6 +18,7 @@ Este proyecto funciona como un "validador estricto" en tiempo real que evalúa e
 - **Frontend:** HTML5, CSS3, Vanilla JavaScript (sin frameworks).
 - **Lógica de Validación:** JavaScript nativo (Regex y manipulación del DOM).
 - **Despliegue (Hosting):** Cloudflare Pages (Serverless).
+-  **Herramientas de Desarrollo:** Gemini (generación de Expresiones Regulares y refactorización de código).
 
 ## Autoras
 Desarrollado y mantenido por:
