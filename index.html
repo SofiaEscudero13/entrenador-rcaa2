@@ -209,10 +209,30 @@
       font-size: 1rem;
       color: #0f172a;
     }
+    .area-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .area-rule-tag {
       font-size: 0.8rem;
       color: #64748b;
       font-weight: 600;
+    }
+    .btn-copy-area {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-copy-area:hover {
+      background: #e2e8f0;
+      color: #0f172a;
     }
     .area-input {
       width: 100%;
@@ -295,10 +315,12 @@
       border: 1px solid #cbd5e1;
       border-radius: 12px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      gap: 8px;
       font-size: 0.92rem;
       color: #475569;
+      text-align: center;
     }
     .signature {
       display: flex;
@@ -353,7 +375,7 @@
       </div>
       <div class="toolbar-group">
         <button class="btn btn-helper" id="btnInsertDash">➕ Insertar raya ( — )</button>
-        <button class="btn btn-helper" id="btnCopyCard">📋 Copiar ficha</button>
+        <button class="btn btn-helper" id="btnCopyCard">📋 Copiar ficha completa</button>
       </div>
     </div>
 
@@ -380,7 +402,10 @@
             <span class="area-num">ÁREA 1</span>
             <span class="area-title">Título y Mención de Responsabilidad</span>
           </div>
-          <span class="area-rule-tag">Regla 1.1 y Apéndice A</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 1.1 y Apéndice A</span>
+            <button class="btn-copy-area" data-target="inputArea1" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea1" class="area-input" placeholder="Ej.: Cien años de soledad / Gabriel García Márquez.">
         <ul class="sub-checklist" id="listArea1"></ul>
@@ -393,7 +418,10 @@
             <span class="area-num opt">ÁREA 2</span>
             <span class="area-title">Edición (Incluí la raya inicial —)</span>
           </div>
-          <span class="area-rule-tag">Regla 1.2 [Opcional: Vacío si es 1ª ed.]</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 1.2 [Opcional: Vacío si es 1ª ed.]</span>
+            <button class="btn-copy-area" data-target="inputArea2" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea2" class="area-input" placeholder="Ej.: — 2a ed.">
         <ul class="sub-checklist" id="listArea2"></ul>
@@ -406,7 +434,10 @@
             <span class="area-num">ÁREA 4</span>
             <span class="area-title">Publicación, Distribución, etc. (Incluí la raya inicial —)</span>
           </div>
-          <span class="area-rule-tag">Regla 1.4</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 1.4</span>
+            <button class="btn-copy-area" data-target="inputArea4" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea4" class="area-input" placeholder="Ej.: — Buenos Aires : Sudamericana, 2003.">
         <ul class="sub-checklist" id="listArea4"></ul>
@@ -419,7 +450,10 @@
             <span class="area-num">ÁREA 5</span>
             <span class="area-title">Descripción Física (Incluí la raya inicial —)</span>
           </div>
-          <span class="area-rule-tag">Regla 2.5</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 2.5</span>
+            <button class="btn-copy-area" data-target="inputArea5" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea5" class="area-input" placeholder="Ej.: — 496 p. ; 20 cm.">
         <ul class="sub-checklist" id="listArea5"></ul>
@@ -432,7 +466,10 @@
             <span class="area-num opt">ÁREA 6</span>
             <span class="area-title">Serie o Colección (Incluí la raya inicial — y paréntesis)</span>
           </div>
-          <span class="area-rule-tag">Regla 1.6 [Opcional: Vacío si no pertenece a serie]</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 1.6 [Opcional: Vacío si no pertenece a serie]</span>
+            <button class="btn-copy-area" data-target="inputArea6" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea6" class="area-input" placeholder="Ej.: — (Narrativas hispánicas ; 42)">
         <ul class="sub-checklist" id="listArea6"></ul>
@@ -445,7 +482,10 @@
             <span class="area-num opt">ÁREA 8</span>
             <span class="area-title">Número Normalizado y Condiciones de Disponibilidad (ISBN)</span>
           </div>
-          <span class="area-rule-tag">Regla 1.8B [Opcional]</span>
+          <div class="area-actions">
+            <span class="area-rule-tag">Regla 1.8B [Opcional]</span>
+            <button class="btn-copy-area" data-target="inputArea8" title="Copiar solo esta área">📋 Copiar</button>
+          </div>
         </div>
         <input type="text" id="inputArea8" class="area-input" placeholder="Ej.: ISBN 978-950-07-2345-6.">
         <ul class="sub-checklist" id="listArea8"></ul>
@@ -459,6 +499,12 @@
         <a href="https://www.linkedin.com/in/silvina-antonella-carreno/" target="_blank" rel="noopener noreferrer" class="author-link">Silvina Carreño</a>
         <span>y</span>
         <span class="gemini-badge">✦ Gemini</span>
+      </div>
+      <div style="font-size: 0.8rem; color: #64748b;">
+        Entrenador RCAA2 · Proyecto educativo abierto · Distribuido bajo licencia 
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: none; font-weight: 600;">
+          CC BY-NC-SA 4.0 (No Comercial)
+        </a>
       </div>
     </footer>
   </div>
@@ -1006,6 +1052,21 @@
       const originalText = e.target.textContent;
       e.target.textContent = '✓ ¡Copiada!';
       setTimeout(() => { e.target.textContent = originalText; }, 1500);
+    });
+
+    // COPIA INDIVIDUAL POR ÁREA
+    document.querySelectorAll('.btn-copy-area').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = e.target.getAttribute('data-target');
+        const inputField = document.getElementById(targetId);
+        const textToCopy = inputField.value.trim();
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy);
+        const originalText = e.target.textContent;
+        e.target.textContent = '✓ ¡Copiado!';
+        setTimeout(() => { e.target.textContent = originalText; }, 1500);
+      });
     });
 
     updateAll();
